@@ -1,6 +1,11 @@
-# Agent Web Core Dependencies
+# Poros Protocol - Core Dependencies
 
-# Web Framework & HTTP
+# Web Framework (for Railway deployment)
+Flask>=3.0.0
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+
+# Original Core Dependencies
 fastapi>=0.116.0
 uvicorn>=0.35.0
 httpx>=0.28.0
