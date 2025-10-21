@@ -246,9 +246,159 @@ async def intelligent_route(user_query: str):
 @app.route('/')
 def home():
     """Serve the chat UI"""
-    # Use the same HTML from chat_ui.py but simplified
-    from examples.marketplace_demo.chat_ui import HTML_TEMPLATE
-    return render_template_string(HTML_TEMPLATE)
+    # Simple HTML template
+    html = """
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Poros - AI Agent Marketplace</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                min-height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 20px;
+            }
+            .container {
+                width: 100%;
+                max-width: 800px;
+                background: white;
+                border-radius: 20px;
+                box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+                overflow: hidden;
+            }
+            .header {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 30px;
+                text-align: center;
+            }
+            h1 { font-size: 28px; margin-bottom: 10px; }
+            .subtitle { opacity: 0.9; font-size: 14px; }
+            .chat-box {
+                height: 500px;
+                overflow-y: auto;
+                padding: 20px;
+                background: #f8f9fa;
+            }
+            .message {
+                margin-bottom: 20px;
+                animation: fadeIn 0.3s;
+            }
+            @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+            .user-message {
+                background: #667eea;
+                color: white;
+                padding: 12px 16px;
+                border-radius: 18px 18px 4px 18px;
+                display: inline-block;
+                max-width: 80%;
+                margin-left: auto;
+                float: right;
+                clear: both;
+            }
+            .bot-message {
+                background: white;
+                padding: 12px 16px;
+                border-radius: 18px 18px 18px 4px;
+                display: inline-block;
+                max-width: 80%;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                white-space: pre-wrap;
+            }
+            .input-area {
+                display: flex;
+                padding: 20px;
+                background: white;
+                border-top: 1px solid #e0e0e0;
+            }
+            input {
+                flex: 1;
+                padding: 12px 16px;
+                border: 2px solid #e0e0e0;
+                border-radius: 25px;
+                font-size: 14px;
+                outline: none;
+            }
+            input:focus { border-color: #667eea; }
+            button {
+                margin-left: 10px;
+                padding: 12px 30px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                border: none;
+                border-radius: 25px;
+                cursor: pointer;
+                font-weight: 600;
+            }
+            button:hover { opacity: 0.9; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>🤖 Poros Protocol</h1>
+                <div class="subtitle">Decentralized AI Agent Marketplace</div>
+            </div>
+            <div class="chat-box" id="chatBox">
+                <div class="message">
+                    <div class="bot-message">
+                        Hi! I'm your AI orchestrator. I can help you:
+                        <br><br>
+                        • Scrape any website
+                        <br>• Analyze data
+                        <br>• Summarize content
+                        <br>• Find flights
+                        <br><br>
+                        Try: "Scrape news.ycombinator.com for headlines"
+                    </div>
+                </div>
+            </div>
+            <div class="input-area">
+                <input type="text" id="userInput" placeholder="Ask me anything..." onkeypress="if(event.key==='Enter') sendMessage()">
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+        <script>
+            async function sendMessage() {
+                const input = document.getElementById('userInput');
+                const message = input.value.trim();
+                if (!message) return;
+
+                const chatBox = document.getElementById('chatBox');
+                chatBox.innerHTML += `<div class="message"><div class="user-message">${message}</div></div>`;
+                input.value = '';
+                chatBox.scrollTop = chatBox.scrollHeight;
+
+                try {
+                    const response = await fetch('/chat', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({message: message})
+                    });
+                    const data = await response.json();
+
+                    if (data.success) {
+                        chatBox.innerHTML += `<div class="message"><div class="bot-message">${data.response}</div></div>`;
+                    } else {
+                        chatBox.innerHTML += `<div class="message"><div class="bot-message">Error: ${data.error || 'Unknown error'}</div></div>`;
+                    }
+                } catch (error) {
+                    chatBox.innerHTML += `<div class="message"><div class="bot-message">Error: ${error.message}</div></div>`;
+                }
+
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+        </script>
+    </body>
+    </html>
+    """
+    return html
 
 @app.route('/chat', methods=['POST'])
 def chat():
