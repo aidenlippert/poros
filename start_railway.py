@@ -423,7 +423,7 @@ def chat():
 
 if __name__ == "__main__":
     print("=" * 60)
-    print("🤖 Agent Web Marketplace - Railway Deployment")
+    print("🤖 Poros Protocol - Railway Deployment v1.1")
     print("=" * 60)
     print("\n✅ All agents loaded (embedded mode)")
     print("  • Web Scraper")
@@ -433,5 +433,6 @@ if __name__ == "__main__":
 
     port = int(os.getenv('PORT', 5001))
     print(f"\n🚀 Starting server on port {port}...")
+    print(f"Ready to accept requests!\n")
 
     app.run(host='0.0.0.0', port=port, debug=False, threaded=True)
