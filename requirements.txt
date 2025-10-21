@@ -1,0 +1,25 @@
+# Agent Web Core Dependencies
+
+# Web Framework & HTTP
+fastapi>=0.116.0
+uvicorn>=0.35.0
+httpx>=0.28.0
+
+# Distributed Hash Table
+kademlia>=2.2.3
+
+# Cryptography
+cryptography>=41.0.0
+
+# Data Validation
+pydantic>=2.12.0
+pydantic-settings>=2.11.0
+
+# Demo UI (optional, for examples)
+streamlit>=1.28.0
+
+# Development Dependencies (optional)
+pytest>=7.4.0
+flake8>=6.1.0
+black>=23.0.0
+mypy>=1.5.0
