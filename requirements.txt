@@ -1,30 +1,60 @@
-# Poros Protocol - Core Dependencies
+# Poros Marketplace - AI Agent Marketplace on A2A Protocol
 
-# Web Framework (for Railway deployment)
-Flask>=3.0.0
-requests>=2.31.0
-beautifulsoup4>=4.12.0
+# ===== CORE: A2A Protocol SDK =====
+a2a-sdk[all]>=0.3.0
 
-# Original Core Dependencies
+# ===== WEB FRAMEWORK =====
 fastapi>=0.116.0
 uvicorn>=0.35.0
 httpx>=0.28.0
 
-# Distributed Hash Table
-kademlia>=2.2.3
+# Railway deployment support
+Flask>=3.0.0
+requests>=2.31.0
+beautifulsoup4>=4.12.0
 
-# Cryptography
-cryptography>=41.0.0
+# ===== DATABASE =====
+sqlalchemy>=2.0.0
+psycopg2-binary>=2.9.0
+alembic>=1.13.0
 
-# Data Validation
+# ===== LLM INTEGRATION (Orchestrator) =====
+anthropic>=0.18.0
+openai>=1.12.0
+
+# ===== PAYMENTS =====
+stripe>=8.0.0
+
+# ===== AUTHENTICATION =====
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+python-multipart>=0.0.9
+
+# ===== MONITORING =====
+opentelemetry-api>=1.22.0
+opentelemetry-sdk>=1.22.0
+
+# ===== DATA VALIDATION =====
 pydantic>=2.12.0
 pydantic-settings>=2.11.0
 
-# Demo UI (optional, for examples)
+# ===== UTILITIES =====
+python-dotenv>=1.0.0
+loguru>=0.7.2
+
+# ===== MVP UI (Phase 1) =====
 streamlit>=1.28.0
 
-# Development Dependencies (optional)
+# ===== LEGACY (Keep for reference) =====
+# These were used in the old Agent Web protocol
+kademlia>=2.2.3
+cryptography>=41.0.0
+
+# ===== TESTING =====
 pytest>=7.4.0
-flake8>=6.1.0
+pytest-asyncio>=0.21.0
+
+# ===== DEVELOPMENT =====
 black>=23.0.0
+flake8>=6.1.0
 mypy>=1.5.0
