@@ -1,0 +1,8 @@
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "poros_backend/Dockerfile"
+dockerContext = "poros_backend"
+watchPatterns = ["poros_backend/**"]
+
+[deploy]
+restartPolicyType = "ON_FAILURE"
