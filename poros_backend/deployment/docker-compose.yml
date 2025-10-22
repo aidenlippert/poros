@@ -1,0 +1,65 @@
+# Poros Protocol - Development Stack
+# Run: docker-compose up -d
+
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: poros-postgres
+    environment:
+      POSTGRES_USER: poros
+      POSTGRES_PASSWORD: poros_dev_password
+      POSTGRES_DB: poros_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U poros"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Poros Backend API
+  backend:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: poros-backend
+    environment:
+      DATABASE_URL: postgresql://poros:poros_dev_password@postgres:5432/poros_db
+      SECRET_KEY: dev-secret-key-change-in-production
+      ENVIRONMENT: development
+      LOG_LEVEL: DEBUG
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ../app:/app/app  # Hot reload for development
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  # Redis (for caching, optional)
+  redis:
+    image: redis:7-alpine
+    container_name: poros-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  default:
+    name: poros-network
